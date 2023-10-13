@@ -69,12 +69,10 @@ public class Lexer implements ILexer, AutoCloseable {
 
         lexeme = lexeme.toLowerCase(); 
 
-        TokenKind kind;
-        try {
-            kind = TokenKind.valueOf(lexeme); 
-        } catch (IllegalArgumentException e) {
-            kind = TokenKind.Identifier; 
-        }
+        TokenKind kind = TokenKind.Identifier;
+            if (TokenKind.isKeyword(lexeme)) {
+                kind = TokenKind.valueOf(lexeme);
+            }
 
         return new Token(
             SymbolTable.recordSymbol(lexeme, kind),
