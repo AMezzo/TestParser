@@ -85,29 +85,24 @@ public class Lexer implements ILexer, AutoCloseable {
         String lexeme = "";
         TokenKind kind = TokenKind.IntLit; 
         
-        lexeme += this.ch;
-        advance();
+    lexeme += this.ch;
+    advance();
         
         if (this.ch == 'b' || this.ch == 'B') {
             lexeme += this.ch;
             advance();
             kind = TokenKind.BinaryLit;
-        } else {
-            while ((this.ch == '0' || this.ch == '1') && !atEof()) {
-                lexeme += this.ch;
-                advance();
-            }
-            if (this.ch == 'b' || this.ch == 'B') {
-                lexeme += this.ch;
-                advance();
-                kind = TokenKind.BinaryLit;
-            } else {
                 while (Character.isDigit(this.ch) && !atEof()) {
                     lexeme += this.ch;
                     advance();
                 }
+        } else {
+            while (Character.isDigit(this.ch) && !atEof()) {
+                lexeme += this.ch;
+                advance();
             }
-        }
+    }
+
         
         return new Token(
             SymbolTable.recordSymbol(lexeme, kind),
