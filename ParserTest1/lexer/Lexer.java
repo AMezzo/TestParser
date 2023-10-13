@@ -194,10 +194,10 @@ public class Lexer implements ILexer, AutoCloseable {
         File file = new File(sourceFilePath);
     
         if (!file.exists() || !file.isFile()) {
-            String currentDir = System.getProperty("user.dir");
-            sourceFilePath = currentDir + File.separator + "xsamples" + File.separator + args[0];
+            sourceFilePath = "xsamples" + File.separator + args[0];
             file = new File(sourceFilePath);
         }
+
     
         if (!file.exists() || !file.isFile()) {
             System.err.println("Error: File " + sourceFilePath + " does not exist or is not a valid file.");
