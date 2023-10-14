@@ -59,6 +59,15 @@ public class Lexer implements ILexer, AutoCloseable {
         this.endPosition = this.startPosition;
     }
 
+    private boolean isKeyword(String lexeme) {
+        try {
+            TokenKind.valueOf(lexeme);  
+            return true;  
+        } catch (IllegalArgumentException e) {
+            return false;  
+        }
+    }
+
     private Token identifierOrKeyword() {
         String lexeme = "";
 
@@ -70,7 +79,7 @@ public class Lexer implements ILexer, AutoCloseable {
         lexeme = lexeme.toLowerCase(); 
 
         TokenKind kind = TokenKind.Identifier;
-            if (TokenKind.isKeyword(lexeme)) {
+            if (isKeyword(lexeme)) {
                 kind = TokenKind.valueOf(lexeme);
             }
 
