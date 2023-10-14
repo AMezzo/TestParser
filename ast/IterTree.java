@@ -1,4 +1,4 @@
-package ast.trees;
+package ast;
 
 import ast.AST;
 import visitor.TreeVisitor;
