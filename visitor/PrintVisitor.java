@@ -127,4 +127,28 @@ public class PrintVisitor extends TreeVisitor {
     return null;
   }
 
+  @Override
+public Object visit(BinaryTypeTree node) {
+    print("BinaryType", node);
+    return null;
+}
+
+@Override
+public Object visit(CharTypeTree node) {
+    print("CharType", node);
+    return null;
+}
+
+@Override
+public Object visit(IterTree node) {
+    print("Iter", node);
+    return null;
+}
+
+@Override
+public Object visit(RangeTree node) {
+    print("Range", node);
+    return null;
+}
+
 }
