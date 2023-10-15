@@ -317,16 +317,14 @@ public class Parser {
   private AST expression() throws Lexception, SyntaxErrorException {
     AST tree, child = simpleExpression();
 
-    tree = getRelopTree();
-    if (tree == null) {
-      return child;
+    while ((tree = getRelopTree()) != null) {
+        tree.addChild(child);
+        tree.addChild(simpleExpression());
+        child = tree;
     }
 
-    tree.addChild(child);
-    tree.addChild(simpleExpression());
-
-    return tree;
-  }
+    return child;
+}
 
   private AST getRelopTree() throws Lexception {
     if (relationalOperators.contains(currentToken.getTokenKind())) {
@@ -349,14 +347,13 @@ public class Parser {
     AST tree, child = term();
 
     while ((tree = getAddOpTree()) != null) {
-      tree.addChild(child);
-      tree.addChild(term());
-
-      child = tree;
+        tree.addChild(child);
+        tree.addChild(term());
+        child = tree;
     }
 
     return child;
-  }
+}
 
   private AST getAddOpTree() throws Lexception {
     if (additionOperators.contains(currentToken.getTokenKind())) {
@@ -379,14 +376,13 @@ public class Parser {
     AST tree, child = factor();
 
     while ((tree = getMultOpTree()) != null) {
-      tree.addChild(child);
-      tree.addChild(factor());
-
-      child = tree;
+        tree.addChild(child);
+        tree.addChild(factor());
+        child = tree;
     }
 
     return child;
-  }
+}
 
   private AST getMultOpTree() throws Lexception {
     if (multiplicationOperators.contains(currentToken.getTokenKind())) {
@@ -418,12 +414,12 @@ public class Parser {
             expect(TokenKind.IntLit);
             return node;
         }
-        case BinaryLit: {  // Added condition
+        case BinaryLit: {  
             AST node = new BinaryLitTree(currentToken.getSpelling());
             expect(TokenKind.BinaryLit);
             return node;
         }
-        case CharLit: {  // Added condition
+        case CharLit: {  
             AST node = new CharLitTree(currentToken.getSpelling());
             expect(TokenKind.CharLit);
             return node;
