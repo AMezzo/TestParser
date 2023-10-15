@@ -96,17 +96,21 @@ public class Parser {
     expect(TokenKind.LeftBrace);
 
     while (startingDeclaration()) {
-      node.addChild(declaration());
+        node.addChild(declaration());
     }
 
     while (startingStatement()) {
-      node.addChild(statement());
+        node.addChild(statement());
     }
 
-    expect(TokenKind.RightBrace);
+    if (match(TokenKind.RightBrace)) {
+        expect(TokenKind.RightBrace);
+    } else {
+        error(currentToken.getTokenKind(), TokenKind.RightBrace);
+    }
 
     return node;
-  }
+}
 
   private boolean startingDeclaration() {
     return match(
