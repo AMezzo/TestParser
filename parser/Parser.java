@@ -446,12 +446,12 @@ private AST getRelopTree() throws Lexception {
             return node;
         }
         case BinaryLit: {  
-            AST node = new BinaryLitTree(currentToken.getSpelling());
+            AST node = new BinaryLit(currentToken.getSpelling());
             expect(TokenKind.BinaryLit);
             return node;
         }
         case CharLit: {  
-            AST node = new CharLitTree(currentToken.getSpelling());
+            AST node = new CharLit(currentToken.getSpelling());
             expect(TokenKind.CharLit);
             return node;
         }
