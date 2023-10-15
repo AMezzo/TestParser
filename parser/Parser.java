@@ -407,39 +407,49 @@ public class Parser {
    */
   private AST factor() throws SyntaxErrorException, Lexception {
     switch (currentToken.getTokenKind()) {
-      case LeftParen: {
-        expect(TokenKind.LeftParen);
-        AST node = expression();
-        expect(TokenKind.RightParen);
-
-        return node;
-      }
-      case IntLit: {
-        AST node = new IntTree(currentToken);
-        expect(TokenKind.IntLit);
-
-        return node;
-      }
-      case Identifier: {
-        AST node = new IdentifierTree(currentToken);
-        expect(TokenKind.Identifier);
-
-        if (match(TokenKind.LeftParen)) {
-          node = new CallTree().addChild(node);
-          expect(TokenKind.LeftParen);
-          node.addChild(actualArguments());
-          expect(TokenKind.RightParen);
+        case LeftParen: {
+            expect(TokenKind.LeftParen);
+            AST node = expression();
+            expect(TokenKind.RightParen);
+            return node;
         }
-
-        return node;
-      }
-      default:
-        error(
-            currentToken.getTokenKind(),
-            TokenKind.LeftParen);
-        return null;
+        case IntLit: {
+            AST node = new IntTree(currentToken);
+            expect(TokenKind.IntLit);
+            return node;
+        }
+        case BinaryLit: {  // Added condition
+            AST node = new BinaryLitTree(currentToken.getSpelling());
+            expect(TokenKind.BinaryLit);
+            return node;
+        }
+        case CharLit: {  // Added condition
+            AST node = new CharLitTree(currentToken.getSpelling());
+            expect(TokenKind.CharLit);
+            return node;
+        }
+        case Identifier: {
+            AST node = new IdentifierTree(currentToken);
+            expect(TokenKind.Identifier);
+            if (match(TokenKind.LeftParen)) {
+                node = new CallTree().addChild(node);
+                expect(TokenKind.LeftParen);
+                node.addChild(actualArguments());
+                expect(TokenKind.RightParen);
+            }
+            return node;
+        }
+        default:
+            error(
+                currentToken.getTokenKind(),
+                TokenKind.LeftParen,
+                TokenKind.IntLit,
+                TokenKind.BinaryLit,  
+                TokenKind.CharLit,    
+                TokenKind.Identifier);
+            return null;
     }
-  }
+}
 
   /**
    * ACTUAL_ARGUMENTS → 𝜀
