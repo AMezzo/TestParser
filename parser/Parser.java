@@ -19,6 +19,7 @@ public class Parser {
       TokenKind.NotEqual,
       TokenKind.Less,
       TokenKind.LessEqual,
+      TokenKind.Greater,
       TokenKind.GreaterEqual);
   private EnumSet<TokenKind> additionOperators = EnumSet.of(
       TokenKind.Plus,
@@ -151,16 +152,21 @@ public class Parser {
     AST node = null;
 
     if (match(TokenKind.IntType)) {
-      node = new IntTypeTree();
+        node = new IntTypeTree();
     } else if (match(TokenKind.BooleanType)) {
-      node = new BoolTypeTree();
+        node = new BoolTypeTree();
+    } else if (match(TokenKind.BinaryType)) { 
+        node = new BinaryTypeTree(); 
+    } else if (match(TokenKind.CharType)) { 
+        node = new CharTypeTree(); 
     } else {
-      error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType);
+        error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType, 
+              TokenKind.BinaryType, TokenKind.CharType); 
     }
 
     scan();
     return node;
-  }
+}
 
   /*
    * NAME → <id>
@@ -207,6 +213,10 @@ public class Parser {
    * STATEMENT → NAME '=' E
    */
   private AST statement() throws SyntaxErrorException, Lexception {
+
+    if (match(TokenKind.Iter)) {
+      return iterationStatement();
+  }
 
     switch (currentToken.getTokenKind()) {
       case If:
@@ -270,6 +280,19 @@ public class Parser {
     node.addChild(expression());
     return node;
   }
+  private AST iterationStatement() throws SyntaxErrorException, Lexception {
+    expect(TokenKind.Iter);
+    expect(TokenKind.Pipette); 
+    
+    AST rangeStart = expression(); 
+    
+    expect(TokenKind.Tilde); 
+    
+    AST rangeEnd = expression(); 
+    
+    AST block = block(); 
+    
+}
 
   /**
    * STATEMENT → NAME '=' E
