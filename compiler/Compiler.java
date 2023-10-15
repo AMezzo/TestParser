@@ -1,5 +1,8 @@
 package compiler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import ast.trees.ProgramTree;
 import lexer.ILexer;
 import lexer.Lexception;
