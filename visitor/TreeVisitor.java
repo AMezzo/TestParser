@@ -47,16 +47,4 @@ public abstract class TreeVisitor {
 
   public abstract Object visit(IdentifierTree node);
 
-  public abstract Object visit(BinaryTypeTree node);
-
-  public abstract Object visit(CharTypeTree node);
-
-  public abstract Object visit(BinaryLitTree node);
-
-  public abstract Object visit(CharLitTree node);
-
-  public abstract Object visit(IterTree node);
-
-  public abstract Object visit(RangeTree node);
-
 }
