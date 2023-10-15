@@ -128,37 +128,37 @@ public class PrintVisitor extends TreeVisitor {
   }
 
   @Override
-  public Object visit(BinaryTypeTreeTree node) {
+  public Object visit(BinaryTypeTree node) {
     print(String.format("BinaryTypeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(CharTypeTreeTree node) {
+  public Object visit(CharTypeTree node) {
     print(String.format("CharTypeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(BinaryLitTreeTree node) {
+  public Object visit(BinaryLitTree node) {
     print(String.format("BinaryLitTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(CharLitTreeTree node) {
+  public Object visit(CharLitTree node) {
     print(String.format("CharLitTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(IterTreeTree node) {
+  public Object visit(IterTree node) {
     print(String.format("IterTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(RangeTreeTree node) {
+  public Object visit(RangeTree node) {
     print(String.format("RangeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
