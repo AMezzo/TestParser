@@ -47,16 +47,16 @@ public abstract class TreeVisitor {
 
   public abstract Object visit(IdentifierTree node);
 
-  public abstract Object visit(BinaryType node);
+  public abstract Object visit(BinaryTypeTreeTree node);
 
-  public abstract Object visit(CharType node);
+  public abstract Object visit(CharTypeTreeTree node);
 
-  public abstract Object visit(BinaryLit node);
+  public abstract Object visit(BinaryLitTreeTree node);
 
-  public abstract Object visit(CharLit node);
+  public abstract Object visit(CharLitTreeTree node);
 
-  public abstract Object visit(Iter node);
+  public abstract Object visit(IterTreeTree node);
 
-  public abstract Object visit(Range node);
+  public abstract Object visit(RangeTreeTree node);
 
 }

@@ -153,13 +153,13 @@ public class Parser {
     AST node = null;
 
     if (match(TokenKind.IntType)) {
-      node = new IntTypeTree();
+      node = new IntType();
     } else if (match(TokenKind.BooleanType)) {
-        node = new BoolTypeTree();
+        node = new BoolType();
     } else if (match(TokenKind.BinaryType)) { 
-        node = new BinaryTypeTree(); 
+        node = new BinaryType(); 
     } else if (match(TokenKind.CharType)) { 
-        node = new CharTypeTree(); 
+        node = new CharType(); 
     } else {
         error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType, 
               TokenKind.BinaryType, TokenKind.CharType); 
@@ -245,7 +245,7 @@ public class Parser {
 }
 
 private AST iterStatement() throws SyntaxErrorException, Lexception {
-    AST node = new IterTree();
+    AST node = new Iter();
 
     expect(TokenKind.Iter);
     expect(TokenKind.PipeDash);
