@@ -23,7 +23,18 @@ public class Compiler {
 
       ProgramTree ast = (ProgramTree) parser.execute();
 
-      System.out.println(lexer);
+      try (BufferedReader br = new BufferedReader(new FileReader(sourceFile))) {
+        String line;
+        int lineNumber = 1;
+        while ((line = br.readLine()) != null) {
+          System.out.printf("%3d: %s%n", lineNumber, line);
+          lineNumber++;
+        }
+      } catch (IOException e) {
+        System.err.println("Error reading the source file.");
+        System.exit(1);
+      }
+
       System.out.println();
 
       PrintVisitor printVisitor = new PrintVisitor();
