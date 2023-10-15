@@ -169,4 +169,52 @@ public class TestVisitor extends TreeVisitor {
     return test(tree, expectedSymbol, actualSymbol);
   }
 
+  @Override
+  public Object visit(BinaryTypeTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(CharTypeTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(BinaryLitTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(CharLitTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(IterTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(RangeTreeTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
 }

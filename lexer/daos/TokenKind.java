@@ -16,6 +16,7 @@ public enum TokenKind {
   Multiply, Divide, Comment, Greater, GreaterEqual, 
   BinaryType, BinaryLit, CharType, CharLit, BoolAnd, 
   BoolOr, BoolXor, Iterate, Pipette, Tilde, 
+  
   // Special TokenKind for internal use
   EOF
 }
