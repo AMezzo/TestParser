@@ -169,4 +169,40 @@ public class TestVisitor extends TreeVisitor {
     return test(tree, expectedSymbol, actualSymbol);
   }
 
+  @Override
+  public Object visit(BinaryTypeTree tree) {
+    return test(tree);
+  }
+
+  @Override
+  public Object visit(BinaryLitTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(CharTypeTree tree) {
+    return test(tree);
+  }
+
+  @Override
+  public Object visit(CharLitTree tree) {
+    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
+    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
+
+    return test(tree, expectedSymbol, actualSymbol);
+  }
+
+  @Override
+  public Object visit(IterationTree tree) {
+    return test(tree);
+  }
+
+  @Override
+  public Object visit(RangeTree tree) {
+    return test(tree);
+  }
+
 }
