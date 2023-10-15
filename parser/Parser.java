@@ -18,7 +18,8 @@ public class Parser {
       TokenKind.Equal,
       TokenKind.NotEqual,
       TokenKind.Less,
-      TokenKind.LessEqual);
+      TokenKind.LessEqual,
+      TokenKind.GreaterEqual);
   private EnumSet<TokenKind> additionOperators = EnumSet.of(
       TokenKind.Plus,
       TokenKind.Minus,
