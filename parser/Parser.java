@@ -18,9 +18,7 @@ public class Parser {
       TokenKind.Equal,
       TokenKind.NotEqual,
       TokenKind.Less,
-      TokenKind.LessEqual,
-      TokenKind.Greater,
-      TokenKind.GreaterEqual);
+      TokenKind.LessEqual);
   private EnumSet<TokenKind> additionOperators = EnumSet.of(
       TokenKind.Plus,
       TokenKind.Minus,
@@ -96,21 +94,17 @@ public class Parser {
     expect(TokenKind.LeftBrace);
 
     while (startingDeclaration()) {
-        node.addChild(declaration());
+      node.addChild(declaration());
     }
 
     while (startingStatement()) {
-        node.addChild(statement());
+      node.addChild(statement());
     }
 
-    if (match(TokenKind.RightBrace)) {
-        expect(TokenKind.RightBrace);
-    } else {
-        error(currentToken.getTokenKind(), TokenKind.RightBrace);
-    }
+    expect(TokenKind.RightBrace);
 
     return node;
-}
+  }
 
   private boolean startingDeclaration() {
     return match(
@@ -156,20 +150,21 @@ public class Parser {
     AST node = null;
 
     if (match(TokenKind.IntType)) {
-        node = new IntTypeTree();
+      node = new IntTypeTree();
     } else if (match(TokenKind.BooleanType)) {
         node = new BoolTypeTree();
-    } else if (match(TokenKind.BinaryType)) {
-        node = new BinaryTypeTree();
-    } else if (match(TokenKind.CharType)) {
-        node = new CharTypeTree();
+    } else if (match(TokenKind.BinaryType)) { 
+        node = new BinaryTypeTree(); 
+    } else if (match(TokenKind.CharType)) { 
+        node = new CharTypeTree(); 
     } else {
-        error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType, TokenKind.BinaryType, TokenKind.CharType);
+        error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType, 
+              TokenKind.BinaryType, TokenKind.CharType); 
     }
 
     scan();
     return node;
-}
+  }
 
   /*
    * NAME → <id>
@@ -216,6 +211,11 @@ public class Parser {
    * STATEMENT → NAME '=' E
    */
   private AST statement() throws SyntaxErrorException, Lexception {
+
+    if (match(TokenKind.Iter)) {
+      return iterationStatement();
+  }
+
     switch (currentToken.getTokenKind()) {
         case If: {
             return ifStatement();
@@ -303,7 +303,6 @@ private AST range() throws SyntaxErrorException, Lexception {
     node.addChild(expression());
     return node;
   }
-
   private AST iterationStatement() throws SyntaxErrorException, Lexception {
     expect(TokenKind.Iter);
     expect(TokenKind.Pipette); 
@@ -341,15 +340,13 @@ private AST range() throws SyntaxErrorException, Lexception {
   private AST expression() throws Lexception, SyntaxErrorException {
     AST tree, child = simpleExpression();
 
-    tree = getRelopTree();
-    if (tree == null) {
-        return child;
+    while ((tree = getRelopTree()) != null) {
+        tree.addChild(child);
+        tree.addChild(simpleExpression());
+        child = tree;
     }
 
-    tree.addChild(child);
-    tree.addChild(simpleExpression());
-
-    return tree;
+    return child;
 }
 
 private AST getRelopTree() throws Lexception {
@@ -375,13 +372,14 @@ private AST getRelopTree() throws Lexception {
     AST tree, child = term();
 
     while ((tree = getAddOpTree()) != null) {
-        tree.addChild(child);
-        tree.addChild(term());
-        child = tree;
+      tree.addChild(child);
+      tree.addChild(term());
+
+      child = tree;
     }
 
     return child;
-}
+  }
 
   private AST getAddOpTree() throws Lexception {
     if (additionOperators.contains(currentToken.getTokenKind())) {
@@ -404,13 +402,14 @@ private AST getRelopTree() throws Lexception {
     AST tree, child = factor();
 
     while ((tree = getMultOpTree()) != null) {
-        tree.addChild(child);
-        tree.addChild(factor());
-        child = tree;
+      tree.addChild(child);
+      tree.addChild(factor());
+
+      child = tree;
     }
 
     return child;
-}
+  }
 
   private AST getMultOpTree() throws Lexception {
     if (multiplicationOperators.contains(currentToken.getTokenKind())) {
@@ -443,13 +442,13 @@ private AST getRelopTree() throws Lexception {
             expect(TokenKind.IntLit);
             return node;
         }
-        case BinaryLit: {
-            AST node = new BinaryLiteralTree(currentToken);
+        case BinaryLit: {  
+            AST node = new BinaryLitTree(currentToken.getSpelling());
             expect(TokenKind.BinaryLit);
             return node;
         }
-        case CharLit: {
-            AST node = new CharLiteralTree(currentToken);
+        case CharLit: {  
+            AST node = new CharLitTree(currentToken.getSpelling());
             expect(TokenKind.CharLit);
             return node;
         }
@@ -465,11 +464,16 @@ private AST getRelopTree() throws Lexception {
             return node;
         }
         default:
-            error(currentToken.getTokenKind(), TokenKind.LeftParen, TokenKind.IntLit, TokenKind.BinaryLit, TokenKind.CharLit, TokenKind.Identifier);
+            error(
+                currentToken.getTokenKind(),
+                TokenKind.LeftParen,
+                TokenKind.IntLit,
+                TokenKind.BinaryLit,  
+                TokenKind.CharLit,    
+                TokenKind.Identifier);
             return null;
     }
 }
-
 
   /**
    * ACTUAL_ARGUMENTS → 𝜀
@@ -489,3 +493,4 @@ private AST getRelopTree() throws Lexception {
     return node;
   }
 }
+

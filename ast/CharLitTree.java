@@ -1,4 +1,4 @@
-package ast;
+package ast.trees;
 
 import ast.AST;
 import lexer.daos.Token;
