@@ -18,11 +18,14 @@ public class Parser {
       TokenKind.Equal,
       TokenKind.NotEqual,
       TokenKind.Less,
-      TokenKind.LessEqual);
+      TokenKind.LessEqual,
+      TokenKind.Greater,
+      TokenKind.GreaterEqual);
   private EnumSet<TokenKind> additionOperators = EnumSet.of(
       TokenKind.Plus,
       TokenKind.Minus,
-      TokenKind.Or);
+      TokenKind.Or,
+      TokenKind.Xor);
   private EnumSet<TokenKind> multiplicationOperators = EnumSet.of(
       TokenKind.Multiply,
       TokenKind.Divide,
