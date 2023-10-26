@@ -11,14 +11,14 @@ Return
 Assignment
 Call
 ActualArguments
-RelOp           s
-AddOp           s
-MultOp          s
-Int             s
-Identifier      s
-BinaryType      s
-CharType        s
+RelOp           
+AddOp           
+MultOp          
+Int             
+Identifier     
+BinaryType      
+CharType        
 BinaryLit       s
 CharLit         s
-Iteration       s
-Range           s
+Iteration       
+Range           
