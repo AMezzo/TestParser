@@ -129,37 +129,37 @@ public class PrintVisitor extends TreeVisitor {
 
   @Override
   public Object visit(BinaryTypeTree node) {
-    print(String.format("BinaryTypeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+    print("BinaryType", node);
     return null;
   }
 
   @Override
   public Object visit(CharTypeTree node) {
-    print(String.format("CharTypeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+    print("CharType", node);
     return null;
   }
 
   @Override
   public Object visit(BinaryLitTree node) {
-    print(String.format("BinaryLitTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+    print(String.format("BinaryLit: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
   public Object visit(CharLitTree node) {
-    print(String.format("CharLitTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+    print(String.format("CharLit: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
     return null;
   }
 
   @Override
-  public Object visit(IterTreeTree node) {
-    print(String.format("IterTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+  public Object visit(IterationTree node) {
+    print("Iteration", node);
     return null;
   }
 
   @Override
-  public Object visit(RangeTreeTree node) {
-    print(String.format("RangeTree: %s", ((ISymbolTree) node).getSymbol().getLexeme()), node);
+  public Object visit(RangeTree node) {
+    print("Range", node);
     return null;
   }
 

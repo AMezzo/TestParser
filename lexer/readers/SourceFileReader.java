@@ -9,6 +9,8 @@ public class SourceFileReader implements IReader {
 
   private String filePath;
   private BufferedReader reader;
+  private StringBuffer buffer;
+  private String lineTemplate = "%3d: ";
 
   private int lineNumber;
   private int column;
@@ -18,6 +20,9 @@ public class SourceFileReader implements IReader {
     this.filePath = filePath;
     this.lineNumber = 1;
     this.column = -1;
+
+    this.buffer = new StringBuffer();
+    this.buffer.appen(String.format(LINE_TEMPLATE,1));
 
     try {
       this.reader = new BufferedReader(new FileReader(filePath));
@@ -39,9 +44,10 @@ public class SourceFileReader implements IReader {
   @Override
   public char read() {
     try {
-        if (this.lastChar == '\n' || (this.lastChar == '\r' && peek() != '\n')) {
+        if (this.lastChar == '\n') {
             this.lineNumber++;
             this.column = -1;
+            this.buffer.append(LINE_TEMPLATE);
         }
 
         this.lastChar = advance();
@@ -64,12 +70,6 @@ public class SourceFileReader implements IReader {
     }
   }
   
-  private char peek() throws IOException {
-    this.reader.mark(1);
-    char nextChar = (char) this.reader.read();
-    this.reader.reset();
-    return nextChar;
-}
 
   private char advance() throws IOException {
     this.column++;

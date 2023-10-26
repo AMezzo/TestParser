@@ -16,9 +16,9 @@ AddOp           s
 MultOp          s
 Int             s
 Identifier      s
-BinaryTypeTree  s
-CharTypeTree    s
-BinaryLitTree   s
-CharLitTree     s
-IterTree        s
-RangeTree       s
+BinaryType      
+CharType        
+BinaryLit       s
+CharLit         s
+Iteration       
+Range           

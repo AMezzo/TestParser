@@ -76,15 +76,8 @@ public class Lexer implements ILexer, AutoCloseable {
             advance();
         } while (Character.isJavaIdentifierPart(this.ch) && !atEof());
 
-        lexeme = lexeme.toLowerCase(); 
-
-        TokenKind kind = TokenKind.Identifier;
-            if (isKeyword(lexeme)) {
-                kind = TokenKind.valueOf(lexeme);
-            }
-
         return new Token(
-            SymbolTable.recordSymbol(lexeme, kind),
+            SymbolTable.recordSymbol(lexeme, TokenKind.Identifier),
             this.startPosition,
             this.endPosition - 1,
             reader.getLineNumber());
@@ -92,32 +85,18 @@ public class Lexer implements ILexer, AutoCloseable {
 
     private Token integer() {
         String lexeme = "";
-        TokenKind kind = TokenKind.IntLit; 
-        
-    lexeme += this.ch;
-    advance();
-        
-        if (this.ch == 'b' || this.ch == 'B') {
+
+        do {
             lexeme += this.ch;
             advance();
-            kind = TokenKind.BinaryLit;
-                while (Character.isDigit(this.ch) && !atEof()) {
-                    lexeme += this.ch;
-                    advance();
-                }
-        } else {
-            while (Character.isDigit(this.ch) && !atEof()) {
-                lexeme += this.ch;
-                advance();
-            }
-    }
+        } while (Character.isDigit(this.ch) && !atEof());
 
         
         return new Token(
-            SymbolTable.recordSymbol(lexeme, kind),
+            SymbolTable.recordSymbol(lexeme, TokenKind.IntLit),
             this.startPosition,
             this.endPosition - 1,
-            this.reader.getLineNumber());
+            reader.getLineNumber());
     }  
     
     private Token operatorOrSeparator() throws Lexception {
@@ -175,9 +154,6 @@ public class Lexer implements ILexer, AutoCloseable {
     }
 
     private void advance() {
-        if (this.ch == '\n') {
-            lineNumber++;
-        }
         this.ch = this.reader.read();
         this.endPosition++;
     }
@@ -188,7 +164,7 @@ public class Lexer implements ILexer, AutoCloseable {
 
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.err.println("usage: java lexer.Lexer <filename.x>");
+            System.err.println("usage: java lexer.Lexer filename.x");
             System.exit(1);
         }
     
@@ -206,12 +182,16 @@ public class Lexer implements ILexer, AutoCloseable {
             System.exit(1);
         }
     
-        try (Lexer lexer = new Lexer(sourceFilePath)) {
+        try (Lexer lexer = new Lexer(args[0])) {
             Token token;
     
             while ((token = lexer.nextToken()).getTokenKind() != TokenKind.EOF) {
-                System.out.println(token.testPrint());
+                System.out.println(token);
             }
+
+            System.out.println();
+            System.out.println(lexer);
+
         } catch (Lexception lexception) {
             System.err.println(lexception.getMessage());
             System.exit(1);

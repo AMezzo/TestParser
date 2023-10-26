@@ -35,6 +35,7 @@ public class Token {
         return this.lineNumber;
     }
 
+    @Override
     public String testPrint() {
         return String.format(
             "%-20s left: %-8d right: %-8d line: %-8d %s", 

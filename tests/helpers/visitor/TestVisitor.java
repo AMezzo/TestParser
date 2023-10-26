@@ -170,7 +170,17 @@ public class TestVisitor extends TreeVisitor {
   }
 
   @Override
-  public Object visit(BinaryTypeTreeTree tree) {
+  public Object visit(BinaryTypeTree tree) {
+    return test(tree);
+  }
+
+  @Override
+  public Object visit(CharTypeTree tree) {
+    return test(tree);
+  }
+
+  @Override
+  public Object visit(BinaryLitTree tree) {
     String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
     String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
 
@@ -178,7 +188,7 @@ public class TestVisitor extends TreeVisitor {
   }
 
   @Override
-  public Object visit(CharTypeTreeTree tree) {
+  public Object visit(CharLitTree tree) {
     String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
     String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
 
@@ -186,35 +196,13 @@ public class TestVisitor extends TreeVisitor {
   }
 
   @Override
-  public Object visit(BinaryLitTreeTree tree) {
-    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
-    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
-
-    return test(tree, expectedSymbol, actualSymbol);
+  public Object visit(IterationTree tree) {
+    return test(tree);
   }
 
   @Override
-  public Object visit(CharLitTreeTree tree) {
-    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
-    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
-
-    return test(tree, expectedSymbol, actualSymbol);
-  }
-
-  @Override
-  public Object visit(IterTreeTree tree) {
-    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
-    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
-
-    return test(tree, expectedSymbol, actualSymbol);
-  }
-
-  @Override
-  public Object visit(RangeTreeTree tree) {
-    String actualSymbol = ((ISymbolTree) tree).getSymbol().toString();
-    String expectedSymbol = ((ISymbolTree) expected.get(index)).getSymbol().toString();
-
-    return test(tree, expectedSymbol, actualSymbol);
+  public Object visit(RangeTree tree) {
+    return test(tree);
   }
 
 }
