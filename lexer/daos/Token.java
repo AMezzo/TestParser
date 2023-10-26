@@ -36,7 +36,7 @@ public class Token {
     }
 
     @Override
-    public String testPrint() {
+    public String toString() {
         return String.format(
             "%-20s left: %-8d right: %-8d line: %-8d %s", 
             this.getLexeme(),
@@ -46,8 +46,4 @@ public class Token {
             this.getTokenKind());
     }
     
-    @Override
-    public String toString() {
-    return testPrint();
-}
 }

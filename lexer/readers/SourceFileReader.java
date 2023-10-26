@@ -10,7 +10,7 @@ public class SourceFileReader implements IReader {
   private String filePath;
   private BufferedReader reader;
   private StringBuffer buffer;
-  private String lineTemplate = "%3d: ";
+  private String LINE_TEMPLATE = "%3d: ";
 
   private int lineNumber;
   private int column;
@@ -22,7 +22,7 @@ public class SourceFileReader implements IReader {
     this.column = -1;
 
     this.buffer = new StringBuffer();
-    this.buffer.appen(String.format(LINE_TEMPLATE,1));
+    this.buffer.append(String.format(LINE_TEMPLATE, 1));
 
     try {
       this.reader = new BufferedReader(new FileReader(filePath));
@@ -47,13 +47,15 @@ public class SourceFileReader implements IReader {
         if (this.lastChar == '\n') {
             this.lineNumber++;
             this.column = -1;
-            this.buffer.append(LINE_TEMPLATE);
+            this.buffer.append(String.format(LINE_TEMPLATE, this.lineNumber));
         }
 
         this.lastChar = advance();
 
         if (this.lastChar == '\0') {
             return '\0';
+        } else {
+          this.buffer.append(this.lastChar);
         }
 
         return this.lastChar;
@@ -93,4 +95,8 @@ public class SourceFileReader implements IReader {
     return this.lineNumber;
   }
 
+  @Override
+  public String toString() {
+    return this.buffer.toString();
+  }
 }
