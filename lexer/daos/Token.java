@@ -35,6 +35,10 @@ public class Token {
         return this.lineNumber;
     }
 
+    public String testPrint() {
+    return this.toString();
+}
+
     @Override
     public String toString() {
         return String.format(
