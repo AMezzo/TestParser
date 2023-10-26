@@ -68,6 +68,7 @@ public class Lexer implements ILexer, AutoCloseable {
         }
     }
 
+    
     private Token identifierOrKeyword() {
         String lexeme = "";
 
@@ -98,7 +99,11 @@ public class Lexer implements ILexer, AutoCloseable {
             this.endPosition - 1,
             reader.getLineNumber());
     }  
-    
+
+    private boolean isBinaryDigit() {
+        return this.ch == '0' || this.ch == '1';
+    }
+ 
     private Token operatorOrSeparator() throws Lexception {
         String singleCharacter = "" + this.ch;
 
@@ -162,6 +167,11 @@ public class Lexer implements ILexer, AutoCloseable {
         return this.ch == '\0';
     }
 
+    @Override
+    public String toString() {
+        return this.reader.toString();
+    }
+
     public static void main(String[] args) {
         if (args.length != 1) {
             System.err.println("usage: java lexer.Lexer filename.x");
@@ -170,11 +180,6 @@ public class Lexer implements ILexer, AutoCloseable {
     
         String sourceFilePath = args[0];
         File file = new File(sourceFilePath);
-    
-        if (!file.exists() || !file.isFile()) {
-            sourceFilePath = "xsamples" + File.separator + args[0];
-            file = new File(sourceFilePath);
-        }
 
     
         if (!file.exists() || !file.isFile()) {
