@@ -25,7 +25,6 @@ public class Parser {
       TokenKind.Plus,
       TokenKind.Minus,
       TokenKind.Or,
-      TokenKind.BoolOr,
       TokenKind.BoolXor);
   private EnumSet<TokenKind> multiplicationOperators = EnumSet.of(
       TokenKind.Multiply,
@@ -160,13 +159,9 @@ public class Parser {
     if (match(TokenKind.IntType)) {
       node = new IntTypeTree();
     } else if (match(TokenKind.BooleanType)) {
-        node = new BoolTypeTree();
-    } else if (match(TokenKind.BinaryType)) { 
-        node = new BinaryTypeTree(); 
-    } else if (match(TokenKind.CharType)) { 
-        node = new CharTypeTree(); 
+      node = new BoolTypeTree();
     } else {
-        error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType); 
+      error(currentToken.getTokenKind(), TokenKind.IntType, TokenKind.BooleanType);
     }
 
     scan();
@@ -219,46 +214,28 @@ public class Parser {
    */
   private AST statement() throws SyntaxErrorException, Lexception {
 
-    if (match(TokenKind.Iterate)) {
-      return iterateStatement();
-  }
-
     switch (currentToken.getTokenKind()) {
-        case If: {
-            return ifStatement();
-        }
-        case While: {
-            return whileStatement();
-        }
-        case Return: {
-            return returnStatement();
-        }
-        case LeftBrace: {
-            return block();
-        }
-        case Identifier: {
-            return assignStatement();
-        }
-        case Iterate: {
-          return iterateStatement();
-      }
-        default:
-            error(currentToken.getTokenKind(), TokenKind.If, TokenKind.While, TokenKind.Return, TokenKind.LeftBrace, TokenKind.Identifier, TokenKind.Iterate);
-            return null;
+      case If:
+        return ifStatement();
+      case While:
+        return whileStatement();
+      case Return:
+        return returnStatement();
+      case LeftBrace:
+        return block();
+      case Identifier:
+        return assignStatement();
+      default:
+        error(
+            currentToken.getTokenKind(),
+            TokenKind.If,
+            TokenKind.While,
+            TokenKind.Return,
+            TokenKind.LeftBrace,
+            TokenKind.Identifier);
+        return null;
     }
-}
-
-
-private AST range() throws SyntaxErrorException, Lexception {
-    AST node = new RangeTree();
-
-    node.addChild(expression());
-    expect(TokenKind.Tilde);
-    node.addChild(expression());
-
-    return node;
-}
-
+  }
 
   /**
    * STATEMENT → 'if' E 'then' BLOCK 'else' BLOCK
@@ -291,7 +268,6 @@ private AST range() throws SyntaxErrorException, Lexception {
   /**
    * STATEMENT → 'return' E
    */
-
   private AST returnStatement() throws SyntaxErrorException, Lexception {
     AST node = new ReturnTree();
 
@@ -300,19 +276,6 @@ private AST range() throws SyntaxErrorException, Lexception {
     node.addChild(expression());
     return node;
   }
-  
-  private AST iterateStatement() throws SyntaxErrorException, Lexception {
-    
-    AST node = new IterationTree();
-
-    expect(TokenKind.Iterate);
-    expect(TokenKind.Pipette); 
-    node.addChild(range());
-    node.addChild(block());
-
-    return node;
-    
-}
 
   /**
    * STATEMENT → NAME '=' E
@@ -338,27 +301,27 @@ private AST range() throws SyntaxErrorException, Lexception {
   private AST expression() throws Lexception, SyntaxErrorException {
     AST tree, child = simpleExpression();
 
-    while ((tree = getRelopTree()) != null) {
-        tree.addChild(child);
-        tree.addChild(simpleExpression());
-        child = tree;
+    tree = getRelopTree();
+    if (tree == null) {
+      return child;
     }
 
-    return child;
-}
+    tree.addChild(child);
+    tree.addChild(simpleExpression());
 
-private AST getRelopTree() throws Lexception {
-    if (relationalOperators.contains(currentToken.getTokenKind()) || 
-        currentToken.getTokenKind() == TokenKind.Greater ||
-        currentToken.getTokenKind() == TokenKind.GreaterEqual) {
-        AST tree = new RelOpTree(currentToken);
-        scan();
+    return tree;
+  }
 
-        return tree;
+  private AST getRelopTree() throws Lexception {
+    if (relationalOperators.contains(currentToken.getTokenKind())) {
+      AST tree = new RelOpTree(currentToken);
+      scan();
+
+      return tree;
     } else {
-        return null;
+      return null;
     }
-}
+  }
 
   /**
    * SE → T
@@ -426,52 +389,41 @@ private AST getRelopTree() throws Lexception {
    * F → NAME
    * F → NAME '(' E_LIST ')'
    */
-
- private AST factor() throws SyntaxErrorException, Lexception {
+  private AST factor() throws SyntaxErrorException, Lexception {
     switch (currentToken.getTokenKind()) {
-        case LeftParen: {
-            expect(TokenKind.LeftParen);
-            AST node = expression();
-            expect(TokenKind.RightParen);
-            return node;
+      case LeftParen: {
+        expect(TokenKind.LeftParen);
+        AST node = expression();
+        expect(TokenKind.RightParen);
+
+        return node;
+      }
+      case IntLit: {
+        AST node = new IntTree(currentToken);
+        expect(TokenKind.IntLit);
+
+        return node;
+      }
+      case Identifier: {
+        AST node = new IdentifierTree(currentToken);
+        expect(TokenKind.Identifier);
+
+        if (match(TokenKind.LeftParen)) {
+          node = new CallTree().addChild(node);
+          expect(TokenKind.LeftParen);
+          node.addChild(actualArguments());
+          expect(TokenKind.RightParen);
         }
-        case IntLit: {
-            AST node = new IntTree(currentToken);
-            expect(TokenKind.IntLit);
-            return node;
-        }
-        case BinaryLit: {  
-            AST node = new BinaryLitTree(currentToken);
-            expect(TokenKind.BinaryLit);
-            return node;
-        }
-        case CharLit: {  
-            AST node = new CharLitTree(currentToken);
-            expect(TokenKind.CharLit);
-            return node;
-        }
-        case Identifier: {
-            AST node = new IdentifierTree(currentToken);
-            expect(TokenKind.Identifier);
-            if (match(TokenKind.LeftParen)) {
-                node = new CallTree().addChild(node);
-                expect(TokenKind.LeftParen);
-                node.addChild(actualArguments());
-                expect(TokenKind.RightParen);
-            }
-            return node;
-        }
-        default:
-            error(
-                currentToken.getTokenKind(),
-                TokenKind.LeftParen,
-                TokenKind.IntLit,
-                TokenKind.BinaryLit,  
-                TokenKind.CharLit,    
-                TokenKind.Identifier);
-            return null;
+
+        return node;
+      }
+      default:
+        error(
+            currentToken.getTokenKind(),
+            TokenKind.LeftParen);
+        return null;
     }
-}
+  }
 
   /**
    * ACTUAL_ARGUMENTS → 𝜀

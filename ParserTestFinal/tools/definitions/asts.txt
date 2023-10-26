@@ -1,0 +1,24 @@
+Program
+Block
+Declaration
+FunctionDeclaration
+Formals
+IntType
+BoolType
+If
+While
+Return
+Assignment
+Call
+ActualArguments
+RelOp           
+AddOp           
+MultOp          
+Int             
+Identifier     
+BinaryType      
+CharType        
+BinaryLit       s
+CharLit         s
+Iteration       
+Range           
